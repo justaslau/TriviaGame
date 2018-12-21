@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+}
+
+header {
+    background: teal;
+    text-align: center;
+    min-height: 50px;
+    font-size: 32px;
+    color: white;
+    margin-bottom: 35px;
+}
+
+.game-section {
+    display: flex;
+    background: tomato;
+    min-height: 250px;
+    width: 55%;
+    margin: auto;
+    border-radius: 5px;
+}
