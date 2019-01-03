@@ -6,7 +6,8 @@ Date: 2018-12-17
 */
 // Game Global Variables
 var player;
-var questionsTimer = 10;
+var questionsTimer = 15; // seconds, time to select answer
+var correctTimer = 5000; // m seconds, time to show result
 var intervalId;
 var resultCorrect = 0;
 var resultIncorrect = 0;
@@ -61,7 +62,7 @@ function Game() {
 				this.randomNumberList.push(genRandomNumber);
 				randomNumber = genRandomNumber;
 				// Reset timer before new question is selected
-				questionsTimer = 10;
+				questionsTimer = 15;
 			} else {
 				// Generate new number if question already was dispayed
 				this.generateRandomNumber();
@@ -80,10 +81,9 @@ function Game() {
 		if (this.questionsList.length != this.randomNumberList.length) {
 			setTimeout(function() {
 				self.hideContent(".correct-answer", self.generateRandomNumber(), self.runTimer());
-			}, 5000);
+			}, correctTimer);
 		} else {
-			console.log("you answered to all questions");
-			setTimeout(self.showScore, 5000);
+			setTimeout(self.showScore, correctTimer);
 		}
 	}
 	// Method (event listener) waiting until one of the answers is clicked
@@ -110,7 +110,6 @@ function Game() {
 		$('<div class="after-start"></div>').appendTo(".game-section").hide();
 		$('<div id="show-number"></div>').appendTo(".after-start");
 		$('<div class="question"></div>').appendTo(".after-start");
-		$('<div class="answers"></div>').appendTo(".after-start");
 		$("#show-number").html("<h2>" + questionsTimer + "</h2>");
 		$(".question").text(this.questionsList[randomNumber].question);
 		// Mix answers in array
@@ -149,10 +148,10 @@ function Game() {
 		$('<div id="noanswer"></div>').appendTo(".show-score");
 		$('<button id="try-again">').appendTo(".show-score");
 		$("#try-again").text("Play Again!");
-		$("#show-title").html("<h2>Your score:</h2>");
-		$("#correct").html("Correct " + resultCorrect);
-		$("#incorrect").html("Incorrect " + resultIncorrect);
-		$("#noanswer").html("Not answered " + resultNoAnswer);
+		$("#show-title").html("<h2>" + player + ", your score:</h2>");
+		$("#correct").html("Correct: " + resultCorrect);
+		$("#incorrect").html("Incorrect: " + resultIncorrect);
+		$("#noanswer").html("Not answered: " + resultNoAnswer);
 		$(".show-score").fadeIn(500);
 		$("header").text("You finished this quiz.");
 		$("#try-again").one("click", function() {
@@ -165,20 +164,23 @@ $(document).ready(function() {
 	// Game questions (0 - question, 1 - correctAnswer, 2,3,4 - wrong answers)
 	ourGame.questionsList.push(new ourGame.Questions("What does the online acronym SMH stand for?", "Shaking my head", "Something", "No meaning", "So much hate"));
 	ourGame.questionsList.push(new ourGame.Questions("What is the EN translation automaker Volkswagen?", "People's car", "Safe car", "Family car", "Comfort car"));
-	ourGame.questionsList.push(new ourGame.Questions("What is the Spanish word for meat?", "Carne", "Pollo", "Asada", "Pescado"));
-	ourGame.questionsList.push(new ourGame.Questions("The term “déjà vu” comes from what language?", "French", "Spanish", "English", "German"));
-	ourGame.questionsList.push(new ourGame.Questions("What language do they speak in Brazil?", "Portuguese", "Spanish", "Brazilian", "English"));
-	ourGame.questionsList.push(new ourGame.Questions("How do you say hello in Mandarin Chinese?", "Ni Hao", "My dahn", "Zhow", "Boo kuh-chi"));
-	ourGame.questionsList.push(new ourGame.Questions("Which is the most widely spoken language in the world?", "Mandarin Chinese", "English", "Russian", "Spanish"));
-	ourGame.questionsList.push(new ourGame.Questions("What does the Japanese phrase, “domo arigato” mean in English?", "Thank you very much", "You are very welcome", "It's my pleasyre", "Have a wonderful day"));
-	ourGame.questionsList.push(new ourGame.Questions("What is the national language of India?", "Hindi", "Punjabi", "Tamil", "Telugu"));
-	ourGame.questionsList.push(new ourGame.Questions("What is the Spanish word for money?", "Dinero", "Plata", "Oro", "Telugu"));
+	// ourGame.questionsList.push(new ourGame.Questions("What is the Spanish word for meat?", "Carne", "Pollo", "Asada", "Pescado"));
+	// ourGame.questionsList.push(new ourGame.Questions("The term “déjà vu” comes from what language?", "French", "Spanish", "English", "German"));
+	// ourGame.questionsList.push(new ourGame.Questions("What language do they speak in Brazil?", "Portuguese", "Spanish", "Brazilian", "English"));
+	// ourGame.questionsList.push(new ourGame.Questions("How do you say hello in Mandarin Chinese?", "Ni Hao", "My dahn", "Zhow", "Boo kuh-chi"));
+	// ourGame.questionsList.push(new ourGame.Questions("Which is the most widely spoken language in the world?", "Mandarin Chinese", "English", "Russian", "Spanish"));
+	// ourGame.questionsList.push(new ourGame.Questions("What does the Japanese phrase, “domo arigato” mean in English?", "Thank you very much", "You are very welcome", "It's my pleasyre", "Have a wonderful day"));
+	// ourGame.questionsList.push(new ourGame.Questions("What is the national language of India?", "Hindi", "Punjabi", "Tamil", "Telugu"));
+	// ourGame.questionsList.push(new ourGame.Questions("What is the Spanish word for money?", "Dinero", "Plata", "Oro", "Telugu"));
 	// After confirm button is clicked start game
 	$("#confirm").click(function() {
 		player = $("#name").val();
 		if (!player) {
-			player = "Guess";
+			player = "Player";
 		}
 		ourGame.hideContent(".before-start", ourGame.generateRandomNumber(), ourGame.runTimer());
+	});
+	$("#name").click(function() {
+		$(this).attr("placeholder", "");
 	});
 });
