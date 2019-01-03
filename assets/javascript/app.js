@@ -44,7 +44,7 @@ function Game() {
 		this.linkToGif;
 		// Method to assign GIF by correct answer (using API)
 		this.selectGif = function() {
-			var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + correctAnswer + "&api_key=" + gifApiKey + "&limit=1";
+			var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + correctAnswer + "&api_key=" + gifApiKey + "&limit=1";
 			$.ajax({
 				url: queryURL,
 				method: "GET"
